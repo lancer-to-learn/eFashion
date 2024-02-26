@@ -1,0 +1,43 @@
+{
+    "categories": [
+        {
+            "name": "Women Fashion",
+            "subcategory": [
+                "Dress",
+                "Indoor Clothes",
+                "Office Clothes"
+            ]
+        },
+        {
+            "name": "Men Fashion",
+            "subcategory": [
+                "Outwear & Jackets",
+                "T-Shirts",
+                "Pants"
+            ]
+        },
+        {
+            "name": "Kid Fashion",
+            "subcategory": [
+                "Indoor Fashion",
+                "Outdoor Fashion"
+            ]
+        },
+        {
+            "name": "Accessories",
+            "subcategory": [
+                "Hats",
+                "Glasses",
+                "Watches",
+                "Shoes"
+            ]
+        },
+        {
+            "name": "Sport Wears",
+            "subcategory": [
+                "Women",
+                "Men"
+            ]
+        }
+    ]
+}
