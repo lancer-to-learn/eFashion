@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                 ) : ourButton(
                     color: redColor,
                     title: login,
-                    textColor: whiteColor,
+                    textColor: redColor,
                     onPress: 
                       () async {
                         controller.isLoading(true);
@@ -101,22 +101,22 @@ class LoginScreen extends StatelessWidget {
                       Get.to(() => const SignupScreen());
                     }).box.width(context.screenWidth - 50).make(),
                 10.heightBox,
-                loginWith.text.color(fontGrey).make(),
-                5.heightBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                      3,
-                      (index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                              backgroundColor: lightGrey,
-                              radius: 25,
-                              child: Image.asset(
-                                socialIconList[index],
-                                width: 30,
-                              )))),
-                )
+                // loginWith.text.color(fontGrey).make(),
+                // 5.heightBox,
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: List.generate(
+                //       3,
+                //       (index) => Padding(
+                //           padding: const EdgeInsets.all(8.0),
+                //           child: CircleAvatar(
+                //               backgroundColor: lightGrey,
+                //               radius: 25,
+                //               child: Image.asset(
+                //                 socialIconList[index],
+                //                 width: 30,
+                //               )))),
+                // )
               ],
             )
                 .box
