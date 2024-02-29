@@ -53,7 +53,7 @@ class LoginScreen extends StatelessWidget {
 
                 //   ],
                 // ),
-                
+
                 10.heightBox,
                 customTextField(
                     title: email,
@@ -66,30 +66,31 @@ class LoginScreen extends StatelessWidget {
                     isPass: true,
                     controller: controller.passwordController),
                 5.heightBox,
-                controller.isLoading.value ? const CircularProgressIndicator( 
-                  valueColor: AlwaysStoppedAnimation(redColor),
-                ) : ourButton(
-                    color: redColor,
-                    title: login,
-                    textColor: redColor,
-                    onPress: 
-                      () async {
-                        controller.isLoading(true);
+                controller.isLoading.value
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(redColor),
+                      )
+                    : ourButton(
+                        color: redColor,
+                        title: login,
+                        textColor: whiteColor,
+                        onPress: () async {
+                          controller.isLoading(true);
 
-                        await controller
-                            .loginMethod(context: context)
-                            .then((value) async {
-                          if (value != null) {
-                            print("value is not null");
-                            VxToast.show(context, msg: loggedIn);
-                            Get.off(() => const Home());
-                          }else{
-                            print("value is null");
-                            controller.isLoading(false);
-                          }
-                        });
-                      }
-                    ).box.width(context.screenWidth - 50).make(),
+                          await controller
+                              .loginMethod(context: context)
+                              .then((value) async {
+                            if (value != null && value.user!.emailVerified) {
+                              print("value is not null");
+                              VxToast.show(context, msg: loggedIn);
+                              Get.off(() => const Home());
+                            } else {
+                              print("value is null");
+                              print("please verify your email");
+                              controller.isLoading(false);
+                            }
+                          });
+                        }).box.width(context.screenWidth - 50).make(),
                 5.heightBox,
                 createNewAccount.text.color(fontGrey).make(),
                 5.heightBox,
