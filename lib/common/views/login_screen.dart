@@ -4,6 +4,7 @@ import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/common/controllers/auth_controller.dart';
 // import 'package:e_fashion/views/admin/auth/login_admin.dart';
 import 'package:e_fashion/common/views/signup_screen.dart';
+import 'package:e_fashion/consts/strings.dart';
 import 'package:e_fashion/user/views/home_screen/home.dart';
 import 'package:e_fashion/user/views/home_screen/home_screen.dart';
 import 'package:e_fashion/common/widgets/applogo_widget.dart';
@@ -11,6 +12,7 @@ import 'package:e_fashion/common/widgets/bg_widget.dart';
 import 'package:e_fashion/common/widgets/custom_textfield.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
 import 'package:e_fashion/common/widgets/text_style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../../consts/lists.dart';
@@ -81,12 +83,15 @@ class LoginScreen extends StatelessWidget {
                               .loginMethod(context: context)
                               .then((value) async {
                             if (value != null && value.user!.emailVerified) {
-                              print("value is not null");
                               VxToast.show(context, msg: loggedIn);
+
+                              print("############");
+                              print("Login with user: ");
+                              print(value.user!.email);
+                              print("############");
+
                               Get.off(() => const Home());
                             } else {
-                              print("value is null");
-                              print("please verify your email");
                               controller.isLoading(false);
                             }
                           });
@@ -102,6 +107,30 @@ class LoginScreen extends StatelessWidget {
                       Get.to(() => const SignupScreen());
                     }).box.width(context.screenWidth - 50).make(),
                 10.heightBox,
+
+                FutureBuilder<Widget>(
+                    future: controller.checkEmailVerificationStatus(context),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                      if (snapshot.data is Column) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            expiredEmailVerifyLink.text.color(fontGrey).make(),
+                            resendEmailVerify.text
+                                .color(redColor)
+                                .make()
+                                .onTap(() async {
+                              await controller.sendEmailVerification(context);
+
+                              // ignore: use_build_context_synchronously
+                              VxToast.show(context, msg: pleaseVerifyEmail);
+                            }),
+                          ],
+                        );
+                      }
+                      return const Row();
+                    }),
                 // loginWith.text.color(fontGrey).make(),
                 // 5.heightBox,
                 // Row(
@@ -127,7 +156,7 @@ class LoginScreen extends StatelessWidget {
                 .width(context.screenWidth - 70)
                 .shadowSm
                 .make(),
-          )
+          ),
         ],
       )),
     ));

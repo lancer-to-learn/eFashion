@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/common/views/login_screen.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/consts/firebase_consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
@@ -18,14 +19,14 @@ class AuthController extends GetxController {
   Future<void> sendEmailVerification(context) async {
     try {
       await auth.currentUser?.sendEmailVerification();
+      await signoutMethod(context);
     } catch (e) {
       VxToast.show(context, msg: 'Something went wrong');
-      print(e.toString());
     }
   }
 
   //Timer to automatically redirect
-  setTimerForAutoRedirect() {
+  setTimerForAutoRedirect() async {
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       await auth.currentUser?.reload();
       final user = auth.currentUser;
@@ -43,13 +44,9 @@ class AuthController extends GetxController {
       userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
 
-      if (userCredential.user!.emailVerified  == false) {
-        VxToast.show(context, msg: 'Please vefiry your email');
-        await signoutMethod(context);
-
-        print(userCredential.user?.displayName);
+      if (userCredential.user!.emailVerified == false) {
+        VxToast.show(context, msg: 'Your email has not been verified');
       }
-      print('Email is verified');
     } on FirebaseAuthException catch (e) {
       VxToast.show(context, msg: e.toString());
     }
@@ -57,39 +54,46 @@ class AuthController extends GetxController {
   }
 
   //Manually check if email verified
-  checkEmailVerificationStatus() async {
-    final currentUser = auth.currentUser;
-    if (currentUser != null && currentUser.emailVerified) {
-      print("User is available & email verified");
-      Get.off(const LoginScreen());
+  Future<Widget> checkEmailVerificationStatus(context) async {
+    if (auth.currentUser != null) {
+      if (!auth.currentUser!.emailVerified) {
+        return const Column();
+      }
     }
+    return const Row();
   }
 
   //signup method
   Future<UserCredential?> signupMethod({email, password, context}) async {
     UserCredential? userCredential;
     try {
-      await auth.createUserWithEmailAndPassword(
+      userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       await sendEmailVerification(context);
-
-      VxToast.show(context, msg: 'Please check your Email for verification');
     } on FirebaseAuthException catch (e) {
       VxToast.show(context, msg: e.toString());
     }
+
+    print("##########");
+    print("User created with:");
+    print("Email: " + userCredential!.user!.email.toString());
+    print("Uid: " + userCredential!.user!.uid.toString());
+    print("##########");
+
     return userCredential;
   }
 
   //storing data method
-  storeUserData({name, password, email}) async {
+  storeUserData({name, password, email, uid}) async {
     DocumentReference store =
-        firestore.collection(usersCollections).doc(currentUser!.uid);
+        firestore.collection(usersCollections).doc(uid);
+
     await store.set({
       'name': name,
       'password': password,
       'email': email,
       'imageUrl': '',
-      'id': currentUser!.uid,
+      'id': uid,
       'cart_count': "00",
       'wishlist_count': "00",
       'order_count': "00",

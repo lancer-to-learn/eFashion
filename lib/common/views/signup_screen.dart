@@ -129,29 +129,34 @@ class _SignupScreenState extends State<SignupScreen> {
                               throw Exception(
                                   'Please recheck your information');
                             }
-
                             controller.isLoading(true);
-
                             await controller
                                 .signupMethod(
                                     context: context,
                                     email: emailController.text,
                                     password: passwordController.text)
-                                .then((value) {
-                              return controller.storeUserData(
+                                .then((value) async {
+                              return await controller.storeUserData(
                                   email: emailController.text,
                                   password: passwordController.text,
-                                  name: nameController.text);
+                                  name: nameController.text,
+                                  uid: value!.user?.uid);
                             }).then((value) async {
-                              VxToast.show(context, msg: signUp);
-                              await auth.signOut();
-                              Get.offAll(() => const LoginScreen());
+                              VxToast.show(context, msg: pleaseVerifyEmail);
+
+                              nameController.clear();
+                              emailController.clear();
+                              passwordController.clear();
+                              passwordRetypeController.clear();
+                              
+                              // await controller.setTimerForAutoRedirect();
                             });
                           } catch (e) {
                             VxToast.show(context, msg: e.toString());
-                            controller.isLoading(false);
-                            await auth.signOut();
+                            print(e.toString());
                           }
+                          await auth.signOut();
+                          controller.isLoading(false);
                         }
                       }).box.width(context.screenWidth - 50).make(),
                 10.heightBox,
