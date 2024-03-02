@@ -68,6 +68,19 @@ class LoginScreen extends StatelessWidget {
                     isPass: true,
                     controller: controller.passwordController),
                 5.heightBox,
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  forgetPassword.text.color(fontGrey).make(),
+                  "here".text.color(redColor).make().onTap(() async {
+                    // email = email.text.trim();
+                    if (!controller.emailController.text.isEmail) {
+                      VxToast.show(context, msg: "Please enter a valid email!");
+                    } else {
+                      await controller.retrievePassword(context, controller.emailController.text.trim());
+                      // ignore: use_build_context_synchronously
+                      VxToast.show(context, msg: "Password reset email sent!");
+                    }
+                  })
+                ]),
                 controller.isLoading.value
                     ? const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation(redColor),

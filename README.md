@@ -17,11 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 #Todo
-- forgot password
-
 - save username/password at local
-- edit profile (avatar/username)
-
-- fix bug UI (login/sign up screen)
+- edit profile (avatar / username)
 
 - search & filter

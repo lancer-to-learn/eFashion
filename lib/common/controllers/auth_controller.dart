@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:html';
+import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/common/views/login_screen.dart';
@@ -7,6 +8,9 @@ import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/firebase_consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -21,7 +25,8 @@ class AuthController extends GetxController {
       await auth.currentUser?.sendEmailVerification();
       await signoutMethod(context);
     } catch (e) {
-      VxToast.show(context, msg: 'Something went wrong');
+      VxToast.show(context, msg: somethingWentWrong);
+      print(e.toString());
     }
   }
 
@@ -48,7 +53,8 @@ class AuthController extends GetxController {
         VxToast.show(context, msg: 'Your email has not been verified');
       }
     } on FirebaseAuthException catch (e) {
-      VxToast.show(context, msg: e.toString());
+      VxToast.show(context, msg: "No account found with provided email & password");
+      print(e.toString());
     }
     return userCredential;
   }
@@ -63,6 +69,16 @@ class AuthController extends GetxController {
     return const Row();
   }
 
+  //Password retrieve
+  Future<void> retrievePassword(context, email) async{
+    try {
+      await auth.sendPasswordResetEmail(email: email);      
+    } catch (e) {
+      VxToast.show(context, msg: somethingWentWrong);
+      print(e.toString());
+    }
+  }
+
   //signup method
   Future<UserCredential?> signupMethod({email, password, context}) async {
     UserCredential? userCredential;
@@ -71,7 +87,8 @@ class AuthController extends GetxController {
           email: email, password: password);
       await sendEmailVerification(context);
     } on FirebaseAuthException catch (e) {
-      VxToast.show(context, msg: e.toString());
+      VxToast.show(context, msg: somethingWentWrong);
+      print(e.toString());
     }
 
     print("##########");
@@ -105,7 +122,8 @@ class AuthController extends GetxController {
     try {
       await auth.signOut();
     } catch (e) {
-      VxToast.show(context, msg: e.toString());
+      VxToast.show(context, msg: somethingWentWrong);
+      print(e.toString());
     }
   }
 }

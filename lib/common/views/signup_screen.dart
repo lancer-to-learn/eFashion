@@ -123,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           try {
                             if (passwordController.text !=
                                     passwordRetypeController.text ||
-                                emailController.text == '' ||
+                                !emailController.text.isEmail ||
                                 nameController.text == '' ||
                                 passwordController.text == '') {
                               throw Exception(
