@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:e_fashion/common/controllers/db_controller.dart';
+import 'package:e_fashion/user/controllers/user_class.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/common/controllers/auth_controller.dart';
 // import 'package:e_fashion/views/admin/auth/login_admin.dart';
@@ -23,8 +25,13 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
-    // var controller = Get.put(dependency)
+    var dbcontroller = DatabaseController();
+    dbcontroller.users().then((value) => {
+          controller.emailController.text = value.email,
+          controller.passwordController.text = value.password
+        });
 
+    // var controller = Get.put(dependency)
     return bgWidget(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -75,7 +82,8 @@ class LoginScreen extends StatelessWidget {
                     if (!controller.emailController.text.isEmail) {
                       VxToast.show(context, msg: "Please enter a valid email!");
                     } else {
-                      await controller.retrievePassword(context, controller.emailController.text.trim());
+                      await controller.retrievePassword(
+                          context, controller.emailController.text.trim());
                       // ignore: use_build_context_synchronously
                       VxToast.show(context, msg: "Password reset email sent!");
                     }
@@ -103,11 +111,12 @@ class LoginScreen extends StatelessWidget {
                               print(value.user!.email);
                               print("############");
 
+                              controller.emailController.clear();
+                              controller.passwordController.clear();
                               Get.off(() => const Home());
-                            } else {
-                              controller.isLoading(false);
                             }
                           });
+                          controller.isLoading(false);
                         }).box.width(context.screenWidth - 50).make(),
                 5.heightBox,
                 createNewAccount.text.color(fontGrey).make(),

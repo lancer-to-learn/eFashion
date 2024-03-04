@@ -3,14 +3,14 @@ import 'dart:html';
 import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_fashion/user/controllers/user_class.dart';
 import 'package:e_fashion/common/views/login_screen.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/firebase_consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:e_fashion/common/controllers/db_controller.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
@@ -18,6 +18,7 @@ class AuthController extends GetxController {
   //text controller
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var dbcontroller = DatabaseController();
 
   //verify email
   Future<void> sendEmailVerification(context) async {
@@ -46,14 +47,23 @@ class AuthController extends GetxController {
   Future<UserCredential?> loginMethod({context}) async {
     UserCredential? userCredential;
     try {
+      //login with actual email & password
       userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+
+      //add user to db
+      await dbcontroller.insertUser(UserClass(
+          id: 0,
+          email: emailController.text,
+          password: passwordController.text));
+      await dbcontroller.users();
 
       if (userCredential.user!.emailVerified == false) {
         VxToast.show(context, msg: 'Your email has not been verified');
       }
     } on FirebaseAuthException catch (e) {
-      VxToast.show(context, msg: "No account found with provided email & password");
+      VxToast.show(context,
+          msg: "No account found with provided email & password");
       print(e.toString());
     }
     return userCredential;
@@ -70,9 +80,10 @@ class AuthController extends GetxController {
   }
 
   //Password retrieve
-  Future<void> retrievePassword(context, email) async{
+  Future<void> retrievePassword(context, email) async {
     try {
-      await auth.sendPasswordResetEmail(email: email);      
+      await auth.sendPasswordResetEmail(email: email);
+
     } catch (e) {
       VxToast.show(context, msg: somethingWentWrong);
       print(e.toString());
@@ -102,8 +113,7 @@ class AuthController extends GetxController {
 
   //storing data method
   storeUserData({name, password, email, uid}) async {
-    DocumentReference store =
-        firestore.collection(usersCollections).doc(uid);
+    DocumentReference store = firestore.collection(usersCollections).doc(uid);
 
     await store.set({
       'name': name,

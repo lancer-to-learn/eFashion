@@ -1,14 +1,21 @@
 import 'package:e_fashion/common/views/login_screen.dart';
 import 'package:e_fashion/user/views/home_screen/home_screen.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'consts/consts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  sqfliteFfiInit();
+
+  // databaseFactory = databaseFactoryFfi;
+  databaseFactory = databaseFactoryFfiWeb;
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: "AIzaSyCWmJ89tgypt4ijO6huMxCsHZ-JcLLJqK8", 

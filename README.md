@@ -17,7 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 #Todo
-- save username/password at local
-- edit profile (avatar / username)
+<!-- dart run sqflite_common_ffi_web:setup -->
+- edit profile (avatar)
 
 - search & filter
