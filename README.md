@@ -18,6 +18,6 @@ samples, guidance on mobile development, and a full API reference.
 
 #Todo
 <!-- dart run sqflite_common_ffi_web:setup -->
-- change avater
+<!-- flutter run -d edge --web-renderer html -->
 
 - search & filter

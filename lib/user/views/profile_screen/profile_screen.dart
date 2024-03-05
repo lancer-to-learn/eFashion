@@ -31,6 +31,11 @@ class ProfileScreen extends StatelessWidget {
                   } else {
                     var data = snapshot.data!.docs[0];
 
+                    print("############");
+                    print(currentUser!.email);
+                    print("############");
+
+                    print("Image url: " + data['imageUrl']);
                     return SafeArea(
                         child: Column(
                       children: [
@@ -56,13 +61,13 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               data['imageUrl'] == ''
                                   ? Image.asset(imgProfile,
-                                          width: 50, fit: BoxFit.cover)
+                                          width: 100, fit: BoxFit.fill)
                                       .box
                                       .roundedFull
                                       .clip(Clip.antiAlias)
                                       .make()
                                   : Image.network(data['imageUrl'],
-                                          width: 50, fit: BoxFit.cover)
+                                          width: 100, fit: BoxFit.fill)
                                       .box
                                       .roundedFull
                                       .clip(Clip.antiAlias)

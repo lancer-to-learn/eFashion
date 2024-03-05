@@ -9,19 +9,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'package:sqflite/sqflite.dart';
+// import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sqfliteFfiInit();
 
-  // databaseFactory = databaseFactoryFfi;
+  // databaseFactory = databaseFactoryFfi;flutterfire configure
   databaseFactory = databaseFactoryFfiWeb;
+  //   await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCWmJ89tgypt4ijO6huMxCsHZ-JcLLJqK8", 
-      appId: "1:776815399611:android:e9791f593be53b98120f9e", 
-      messagingSenderId: "776815399611", 
-      projectId: "efashion-f1112"
+      // options: DefaultFirebaseOptions.currentPlatform,
+      options: const FirebaseOptions(
+    apiKey: "AIzaSyCWmJ89tgypt4ijO6huMxCsHZ-JcLLJqK8",
+    appId: "1:776815399611:android:e9791f593be53b98120f9e",
+    messagingSenderId: "776815399611",
+    projectId: "efashion-f1112",
+    storageBucket: "efashion-f1112.appspot.com",
   ));
   runApp(const MyApp());
 }
@@ -38,13 +44,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
-          // set app bar icon color
-          iconTheme: IconThemeData(
-            color: darkFontGrey,
-          ),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent),
-          fontFamily: regular,
+            // set app bar icon color
+            iconTheme: IconThemeData(
+              color: darkFontGrey,
+            ),
+            elevation: 0.0,
+            backgroundColor: Colors.transparent),
+        fontFamily: regular,
       ),
       home: const LoginScreen(),
     );

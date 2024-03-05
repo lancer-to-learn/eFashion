@@ -6,6 +6,7 @@ import 'package:e_fashion/common/widgets/custom_textfield.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -24,7 +25,7 @@ class EditProfileScreen extends StatelessWidget {
                   children: [
                     //if data image url and controller path is empty
                     data['imageUrl'] == '' && controller.proflieImgPath.isEmpty
-                        ? Image.asset(imgProfile, width: 50, fit: BoxFit.cover)
+                        ? Image.asset(imgProfile, width: 50, fit: BoxFit.fill)
                             .box
                             .roundedFull
                             .clip(Clip.antiAlias)
@@ -34,15 +35,22 @@ class EditProfileScreen extends StatelessWidget {
                                 controller.proflieImgPath.isEmpty
                             ? Image.network(
                                 data['imageUrl'],
-                                width: 100,
-                                fit: BoxFit.cover,
+                                width: 50,
+                                fit: BoxFit.fill,
                               ).box.roundedFull.clip(Clip.antiAlias).make()
                             //else if controller path is not empty but data image url is
-                            : Image.file(
-                                File(controller.proflieImgPath.value),
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ).box.roundedFull.clip(Clip.antiAlias).make(),
+                            : kIsWeb
+                                ? Image.memory(controller.webImage,
+                                        fit: BoxFit.fill, width: 50)
+                                    .box
+                                    .roundedFull
+                                    .clip(Clip.antiAlias)
+                                    .make()
+                                : Image.file(
+                                    File(controller.proflieImgPath.value),
+                                    width: 100,
+                                    fit: BoxFit.fill,
+                                  ).box.roundedFull.clip(Clip.antiAlias).make(),
                     10.heightBox,
                     ourButton(
                         color: redColor,
@@ -85,7 +93,15 @@ class EditProfileScreen extends StatelessWidget {
                                   // if image is not selected
                                   if (controller
                                       .proflieImgPath.value.isNotEmpty) {
-                                    await controller.uploadProfileImage();
+                                    try {
+                                      await controller.uploadProfileImage();
+                                    } catch (e) {
+                                      print(e.toString());
+                                      VxToast.show(context,
+                                          msg: "Something went wrong!");
+                                      controller.isloading(false);
+                                      return;
+                                    }
                                   } else {
                                     controller.proflieImageLink =
                                         data['imageUrl'];
@@ -134,8 +150,7 @@ class EditProfileScreen extends StatelessWidget {
                                       } catch (e) {
                                         print(e.toString());
                                         VxToast.show(context,
-                                            msg:
-                                                e.toString());
+                                            msg: e.toString());
                                         controller.isloading(false);
                                         return;
                                       }

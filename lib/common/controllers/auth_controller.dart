@@ -50,7 +50,11 @@ class AuthController extends GetxController {
       //login with actual email & password
       userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+      
+      print("Current user: ");
+      print(currentUser!.email);
 
+      currentUser = userCredential.user;
       //add user to db
       await dbcontroller.insertUser(UserClass(
           id: 0,
@@ -61,7 +65,7 @@ class AuthController extends GetxController {
       if (userCredential.user!.emailVerified == false) {
         VxToast.show(context, msg: 'Your email has not been verified');
       }
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       VxToast.show(context,
           msg: "No account found with provided email & password");
       print(e.toString());
