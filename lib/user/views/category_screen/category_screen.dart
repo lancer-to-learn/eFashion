@@ -1,4 +1,5 @@
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/user/views/product_screen/product_screen.dart';
 import 'package:get/get.dart';
 import 'package:e_fashion/consts/lists.dart';
 import 'package:e_fashion/user/controllers/product_controller.dart';
@@ -34,7 +35,7 @@ class CategoryScreen extends StatelessWidget {
             ).box.white.rounded.clip(Clip.antiAlias).outerShadowSm.make().onTap(() {
 
               controller.getSubCategories(categoriesList[index]);
-              Get.to(() => CategoryDetails(title: categoriesList[index]));
+              Get.to(() => ProductScreen(title: categoriesList[index]));
             });
           }))
       )

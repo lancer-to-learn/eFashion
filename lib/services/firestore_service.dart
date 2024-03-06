@@ -24,6 +24,13 @@ class FirestoreServices {
         .snapshots();
   }
 
+  static filterProduct(filter) {
+    return firestore
+        .collection(productsCollection)
+        .where('p_price', isGreaterThan: filter.min)
+        .where('p_price', isLessThan: filter.max)
+        .snapshots();
+  }
   static getSubCategoryProducts(title){
     return firestore
         .collection(productsCollection)
@@ -146,7 +153,13 @@ class FirestoreServices {
         .collection(productsCollection)
         .get();
   }
-
+  
+  static search(kw) {
+    return firestore
+        .collection(productsCollection)
+        .where('p_name', arrayContains: kw)
+        .snapshots();
+  }
   static getPopularProducts(uid) {
     return firestore
         .collection(productsCollection)

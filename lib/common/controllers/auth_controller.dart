@@ -77,10 +77,10 @@ class AuthController extends GetxController {
   Future<Widget> checkEmailVerificationStatus(context) async {
     if (auth.currentUser != null) {
       if (!auth.currentUser!.emailVerified) {
-        return const Column();
+        return Column();
       }
     }
-    return const Row();
+    return Row();
   }
 
   //Password retrieve

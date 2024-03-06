@@ -12,6 +12,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
+import '../../../common/widgets/search.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -26,27 +28,28 @@ class HomeScreen extends StatelessWidget {
         child: SafeArea(
             child: Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              height: 60,
-              color: lightGrey,
-              child: TextFormField(
-                controller: controller.searchController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  suffixIcon: const Icon(Icons.search).onTap(() {
-                    if (controller.searchController.text.isNotEmptyAndNotNull) {
-                      Get.to(() => SearchScreen(
-                          title: controller.searchController.text));
-                    }
-                  }),
-                  filled: true,
-                  fillColor: whiteColor,
-                  hintText: searchAnything,
-                  hintStyle: const TextStyle(color: textfieldGrey),
-                ),
-              ),
-            ),
+            // Container(
+            //   alignment: Alignment.center,
+            //   height: 60,
+            //   color: lightGrey,
+            //   child: TextFormField(
+            //     controller: controller.searchController,
+            //     decoration: InputDecoration(
+            //       border: InputBorder.none,
+            //       suffixIcon: const Icon(Icons.search).onTap(() {
+            //         if (controller.searchController.text.isNotEmptyAndNotNull) {
+            //           Get.to(() => SearchScreen(
+            //               title: controller.searchController.text));
+            //         }
+            //       }),
+            //       filled: true,
+            //       fillColor: whiteColor,
+            //       hintText: searchAnything,
+            //       hintStyle: const TextStyle(color: textfieldGrey),
+            //     ),
+            //   ),
+            // ),
+            search(),
 
             10.heightBox,
 

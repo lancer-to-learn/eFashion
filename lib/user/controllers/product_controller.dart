@@ -15,7 +15,7 @@ class ProductController extends GetxController {
 
   getSubCategories(title) async {
     subcat.clear();
-    var data = await rootBundle.loadString("lib/services/category_model.json");
+    var data = await rootBundle.loadString("category_model.json");
     var decoded = categoryModelFromJson(data);
     var s =
         decoded.categories.where((element) => element.name == title).toList();

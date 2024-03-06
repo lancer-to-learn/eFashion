@@ -16,6 +16,7 @@ const icCoupon = "icons/coupon.png";
 const icDownload = "icons/download.png";
 const icEdit = "icons/edit.png";
 const icFacebookLogo = "icons/facebook_logo.png";
+const icFilter = "icons/filter.jpg";
 const icFavoriteSeller = "icons/favoriteseller.png";
 const icFlashDeal = "icons/flash_deal.png";
 const icGoogleLogo = "icons/google_logo.png";
