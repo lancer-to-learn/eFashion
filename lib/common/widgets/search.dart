@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 import '../controllers/search_controller.dart';
 
 Widget search() {
-  var controller = Get.put(SearchController());
+  var controller = Get.put(SearchControllers());
   return Container(
               alignment: Alignment.center,
               height: 60,

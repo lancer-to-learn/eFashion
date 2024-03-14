@@ -20,4 +20,12 @@ samples, guidance on mobile development, and a full API reference.
 <!-- dart run sqflite_common_ffi_web:setup -->
 <!-- flutter run -d edge --web-renderer html -->
 
-- search & filter
+- Chức năng hiển thị tất cả sản phẩm theo từng danh mục sử dụng Lazy loading để load tiếp sản phẩm khi kéo xuống cuối trang (API và Code)
+
+- Chức năng hiển thị 10 sản phẩm bán chạy nhất phân trang theo chiều ngang của trang (API và Code)
+
+- Xây dựng chức năng Giỏ hàng cho ứng dụng bán hàng (API + App). Lưu trữ thông tin giỏ hàng bằng local database hoặc lưu trên API đều được.
+
+- Xây dựng chức năng thanh toán đơn hàng với phương thức bắt buộc là COD, có thể tìm hiểu thêm về thanh toán thông qua ví điện tử,...
+
+- Xây dựng chức năng theo dõi đơn hàng của người dùng gồm xem lại lịch sử mua hàng và theo dõi đơn hàng có xác định các trạng thái đơn hàng (1. đơn hàng mới, 2. Đã xác nhận đơn hàng (thủ công hoặc tự động 30 phút sau khi đơn đặt thành công), 3. Shop đang chuẩn bị hàng, 4. Đang giao hàng, 5. Đã giao thành công, 6. Hủy đơn hàng (chỉ cho phép hủy trước 30 phút sau khi đặt đơn, nếu đang ở bước 3 thì chuyển sang Gửi Yêu cầu hủy đơn cho shop)

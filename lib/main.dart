@@ -53,7 +53,8 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.transparent),
         fontFamily: regular,
       ),
-      home: const Home(),
+      // home: const Home(),
+      home: const LoginScreen(),
     );
   }
 }

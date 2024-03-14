@@ -1,7 +1,7 @@
 import 'package:e_fashion/consts/consts.dart';
 import 'package:get/get.dart';
 
-class SearchController extends GetxController {
+class SearchControllers extends GetxController {
 
   @override
   void onInit() {
