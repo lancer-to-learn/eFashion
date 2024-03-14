@@ -1,4 +1,5 @@
 import 'package:e_fashion/common/views/login_screen.dart';
+import 'package:e_fashion/common/views/splash_screen.dart';
 import 'package:e_fashion/user/views/home_screen/home.dart';
 import 'package:e_fashion/user/views/home_screen/home_screen.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
         fontFamily: regular,
       ),
       // home: const Home(),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
