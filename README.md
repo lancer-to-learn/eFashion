@@ -20,9 +20,13 @@ samples, guidance on mobile development, and a full API reference.
 <!-- dart run sqflite_common_ffi_web:setup -->
 <!-- flutter run -d edge --web-renderer html -->
 
+* adjust splash-creen later.
+
+
 - Chức năng hiển thị tất cả sản phẩm theo từng danh mục sử dụng Lazy loading để load tiếp sản phẩm khi kéo xuống cuối trang (API và Code)
 
 - Chức năng hiển thị 10 sản phẩm bán chạy nhất phân trang theo chiều ngang của trang (API và Code)
+
 
 - Xây dựng chức năng Giỏ hàng cho ứng dụng bán hàng (API + App). Lưu trữ thông tin giỏ hàng bằng local database hoặc lưu trên API đều được.
 
