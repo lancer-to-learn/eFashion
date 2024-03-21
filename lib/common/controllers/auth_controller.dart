@@ -59,7 +59,8 @@ class AuthController extends GetxController {
       await dbcontroller.insertUser(UserClass(
           id: 0,
           email: emailController.text,
-          password: passwordController.text));
+          password: passwordController.text,
+          address: "", city: '', state: '', postalcode: '', phone: ''));
       await dbcontroller.users();
 
       if (userCredential.user!.emailVerified == false) {

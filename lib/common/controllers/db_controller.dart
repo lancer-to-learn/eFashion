@@ -14,7 +14,7 @@ class DatabaseController {
       join(await getDatabasesPath(), 'user_database.db'),
       onCreate: (db, version) => {
         db.execute(
-          'CREATE TABLE users(id INTEGER PRIMARY KEY, email TEXT, password TEXT)',
+          'CREATE TABLE users(id INTEGER PRIMARY KEY, email TEXT, password TEXT, address TEXT, city TEXT, state TEXT, postalcode TEXT, phone TEXT)',
         ),
       },
       version: 1,
@@ -68,12 +68,18 @@ class DatabaseController {
     // Query the table for all the users.
     final List<Map<String, Object?>> userMaps = await db.query('users');
     if (userMaps.isEmpty) {
-      return const UserClass(id: 0, email: '', password: '');
+      return const UserClass(id: 0, email: '', password: '', address: '', city: '', state: '', postalcode: '', phone: '');
     }
     print(userMaps.toString());
     return UserClass(
         id: userMaps.elementAt(0)['id'] as int,
         email: userMaps.elementAt(0)['email'] as String,
-        password: userMaps.elementAt(0)['password'] as String);
+        password: userMaps.elementAt(0)['password'] as String,
+        address: userMaps.elementAt(0)['address'] as String,
+        city: userMaps.elementAt(0)['city'] as String,
+        state: userMaps.elementAt(0)['state'] as String,
+        postalcode: userMaps.elementAt(0)['postalcode'] as String,
+        phone: userMaps.elementAt(0)['phone'] as String,
+        );
   }
 }

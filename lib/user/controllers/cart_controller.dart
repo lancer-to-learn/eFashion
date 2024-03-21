@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/user/controllers/user_class.dart';
+import '../../common/controllers/db_controller.dart';
 import 'home_controller.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,8 @@ class CartController extends GetxController {
   var postalcodeController = TextEditingController();
   var phoneController = TextEditingController();
 
+  var dbcontroller = DatabaseController();
+
   var paymentIndex = 0.obs;
   late dynamic productSnapshot;
   var products = [];
@@ -21,7 +25,7 @@ class CartController extends GetxController {
 
   calculate(data) {
     totalP.value = 0;
-    
+
     for (var i = 0; i < data.length; i++) {
       totalP.value = totalP.value + int.parse(data[i]['tprice'].toString());
     }
@@ -31,8 +35,7 @@ class CartController extends GetxController {
     paymentIndex.value = index;
   }
 
-  placeMyOder(
-      {required orderPaymentMethod, required totalAmount}) async {
+  placeMyOder({required orderPaymentMethod, required totalAmount}) async {
     placingOrder(true);
 
     await getProductDetails();
@@ -57,6 +60,22 @@ class CartController extends GetxController {
       'orders': FieldValue.arrayUnion(products),
       'vendors': FieldValue.arrayUnion(vendors)
     });
+    String email='', password='';
+    dbcontroller.users().then((value) => {
+          email = value.email,
+          password = value.password
+        });
+
+    dbcontroller.updateUser(UserClass(
+        id: 0,
+        email: email,
+        password: password,
+        address: addressController.text,
+        state: stateController.text,
+        city: cityController.text,
+        postalcode: postalcodeController.text,
+        phone: phoneController.text));
+
     placingOrder(false);
   }
 
@@ -77,9 +96,9 @@ class CartController extends GetxController {
     print(products);
   }
 
-  clearCart(){
+  clearCart() {
     for (var i = 0; i < productSnapshot.length; i++) {
       firestore.collection(cartCollection).doc(productSnapshot[i].id).delete();
-    } 
+    }
   }
 }

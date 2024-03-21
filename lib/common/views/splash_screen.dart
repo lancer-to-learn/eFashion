@@ -26,6 +26,9 @@ class _SplashScreenState extends State<SplashScreen>{
         if(user == null && mounted){
           Get.to(() => const LoginScreen());
         }else{
+          Get.to(() => const LoginScreen()); // *delete later
+
+          
           // var controller = Get.put(HomeAdminController());
           // print('abc');
           // await controller.getUsername();
