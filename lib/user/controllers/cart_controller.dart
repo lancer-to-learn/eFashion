@@ -1,6 +1,10 @@
+import 'dart:js_interop';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/controllers/user_class.dart';
+import 'package:path/path.dart';
 import '../../common/controllers/db_controller.dart';
 import 'home_controller.dart';
 import 'package:get/get.dart';
@@ -35,6 +39,23 @@ class CartController extends GetxController {
     paymentIndex.value = index;
   }
 
+  saveShipInformation() async {
+    String email = '', password = '';
+    await dbcontroller
+        .users()
+        .then((value) => {email = value.email, password = value.password});
+
+    await dbcontroller.updateUser(UserClass(
+        id: 0,
+        email: email,
+        password: password,
+        address: addressController.text,
+        state: stateController.text,
+        city: cityController.text,
+        postalcode: postalcodeController.text,
+        phone: phoneController.text));
+  }
+
   placeMyOder({required orderPaymentMethod, required totalAmount}) async {
     placingOrder(true);
 
@@ -60,29 +81,30 @@ class CartController extends GetxController {
       'orders': FieldValue.arrayUnion(products),
       'vendors': FieldValue.arrayUnion(vendors)
     });
-    String email='', password='';
-    dbcontroller.users().then((value) => {
-          email = value.email,
-          password = value.password
-        });
-
-    dbcontroller.updateUser(UserClass(
-        id: 0,
-        email: email,
-        password: password,
-        address: addressController.text,
-        state: stateController.text,
-        city: cityController.text,
-        postalcode: postalcodeController.text,
-        phone: phoneController.text));
 
     placingOrder(false);
   }
 
-  getProductDetails() {
+  getProductDetails() async {
     products.clear();
     vendors.clear();
     for (var i = 0; i < productSnapshot.length; i++) {
+      var currentProduct =
+          await FirestoreServices.getProduct(productSnapshot[i]['productId']);
+      if (currentProduct.data().containsKey('bought')) {
+        await firestore
+            .collection(productsCollection)
+            .doc(productSnapshot[i]['productId'])
+            .update({
+          'bought': currentProduct['bought'] + productSnapshot[i]['qty']
+        });
+      } else {
+        await firestore
+            .collection(productsCollection)
+            .doc(productSnapshot[i]['productId'])
+            .set({'bought': productSnapshot[i]['qty']}, SetOptions(merge: true));
+      }
+
       products.add({
         'color': productSnapshot[i]['color'],
         'img': productSnapshot[i]['img'],

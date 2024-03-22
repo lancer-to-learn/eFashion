@@ -31,7 +31,8 @@ class FirestoreServices {
         .where('p_price', isLessThan: filter.max)
         .snapshots();
   }
-  static getSubCategoryProducts(title){
+
+  static getSubCategoryProducts(title) {
     return firestore
         .collection(productsCollection)
         .where('p_subcategory', isEqualTo: title)
@@ -74,7 +75,7 @@ class FirestoreServices {
         .where('vendors', arrayContains: currentUser!.uid)
         .snapshots();
   }
-  
+
   static getDashboard() async {
     var n = await getProductsByVendor(currentUser!.uid);
     var o = await getOrdersByVendor();
@@ -94,8 +95,6 @@ class FirestoreServices {
         .where('fromId', isEqualTo: currentUser!.uid)
         .snapshots();
   }
-
-
 
   static getAllAdminMessages() {
     return firestore
@@ -131,12 +130,24 @@ class FirestoreServices {
     return res;
   }
 
+  static getProduct(id) {
+    return firestore
+        .collection(productsCollection).doc(id).get();
+  }
+
   static allProducts() {
     return firestore.collection(productsCollection).snapshots();
   }
 
+  static getTop10Products() {
+    // return firestore.collection(productsCollection).where();
+  }
+
   static getProductsByVendor(uid) {
-    return firestore.collection(productsCollection).where('vendor_id', isEqualTo: uid).snapshots();
+    return firestore
+        .collection(productsCollection)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
   }
 
   // get featured product
@@ -149,17 +160,16 @@ class FirestoreServices {
 
   //get search product
   static searchProducts(title) {
-    return firestore
-        .collection(productsCollection)
-        .get();
+    return firestore.collection(productsCollection).get();
   }
-  
+
   static search(kw) {
     return firestore
         .collection(productsCollection)
         .where('p_name', arrayContains: kw)
         .snapshots();
   }
+
   static getPopularProducts(uid) {
     return firestore
         .collection(productsCollection)

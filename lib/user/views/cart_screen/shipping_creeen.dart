@@ -33,12 +33,13 @@ class ShippingDetails extends StatelessWidget {
         bottomNavigationBar: SizedBox(
           height: 60,
           child: ourButton(
-            onPress: () {
+            onPress: () async {
               if(controller.addressController.text.length > 10 && 
                   controller.cityController.text.isNotEmpty &&
                   controller.stateController.text.isNotEmpty &&
                   controller.postalcodeController.text.isNotEmpty && num.tryParse(controller.postalcodeController.text) != null &&
                   controller.phoneController.text.length <= 11 && num.tryParse(controller.phoneController.text) != null){
+                  await controller.saveShipInformation();
                 Get.to(() => const PaymentMethods());
               } else {
                 VxToast.show(context, msg: "Please re-check your information");

@@ -68,7 +68,7 @@ class DatabaseController {
     // Query the table for all the users.
     final List<Map<String, Object?>> userMaps = await db.query('users');
     if (userMaps.isEmpty) {
-      return const UserClass(id: 0, email: '', password: '', address: '', city: '', state: '', postalcode: '', phone: '');
+      return const UserClass(id: -1, email: '', password: '', address: '', city: '', state: '', postalcode: '', phone: '');
     }
     print(userMaps.toString());
     return UserClass(

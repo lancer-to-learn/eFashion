@@ -280,7 +280,7 @@ class HomeScreen extends StatelessWidget {
                       20.heightBox,
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: "All Products"
+                        child: "Top 10 bought products"
                             .text
                             .fontFamily(bold)
                             .color(darkFontGrey)
@@ -290,7 +290,8 @@ class HomeScreen extends StatelessWidget {
                       20.heightBox,
 
                       StreamBuilder(
-                          stream: FirestoreServices.allProducts(),
+                          // stream: FirestoreServices.allProducts(),
+                          stream: FirestoreServices.getTop10Products(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {

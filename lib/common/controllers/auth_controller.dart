@@ -56,12 +56,14 @@ class AuthController extends GetxController {
 
       currentUser = userCredential.user;
       //add user to db
-      await dbcontroller.insertUser(UserClass(
-          id: 0,
-          email: emailController.text,
-          password: passwordController.text,
+      if((await dbcontroller.users()).id == -1)
+      {
+        await dbcontroller.insertUser(UserClass(
+            id: 0,
+            email: emailController.text,
+            password: passwordController.text,
           address: "", city: '', state: '', postalcode: '', phone: ''));
-      await dbcontroller.users();
+      }
 
       if (userCredential.user!.emailVerified == false) {
         VxToast.show(context, msg: 'Your email has not been verified');

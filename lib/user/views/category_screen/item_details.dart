@@ -329,6 +329,7 @@ class ItemDetails extends StatelessWidget {
                     onPress: () {
                       if (controller.quantity.value > 0) {
                         controller.addToCart(
+                          productId: data.reference.id,
                           color: data['p_colors'][controller.colorIndex.value],
                           context: context,
                           vendorId: data['vendor_id'],
