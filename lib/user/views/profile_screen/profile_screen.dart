@@ -12,6 +12,7 @@ import 'package:e_fashion/user/views/profile_screen/edit_profile.dart';
 import 'package:get/get.dart';
 
 import '../order_screen/order_screen.dart';
+import '../wishlist_screen/wishlist_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -170,9 +171,9 @@ class ProfileScreen extends StatelessWidget {
                                         case 0:
                                           Get.to(() => const OrdersScreen());
                                           break;
-                                        // case 1:
-                                        //   Get.to(() => const WishlishScreen());
-                                        //   break;
+                                        case 1:
+                                          Get.to(() => const WishlishScreen());
+                                          break;
                                         // case 2:
                                         //   Get.to(() => const MessagesScreen());
                                         //   break;

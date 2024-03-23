@@ -34,6 +34,6 @@ k5ygrup4mDeYXKxMBblQoW0Qf5u2, tprice: 297, qty: 3, title: Short-Sleeve Scoop Nec
 
 - Xây dựng chức năng Bình luận, đánh giá sản phẩm đã mua thành công, mỗi lần đánh giá sẽ tặng mã giảm giá hoặc tặng điểm vào kho điểm tích lũy của mình cho lần mua sau (API + App).  
 
-- Xây dựng chức năng sản phẩm yêu thích, sản phẩm tương tự, sản phẩm đã xem và đếm số khách mua, khách bình luận trên sản phẩm đó (API+APP)
+- sản phẩm tương tự, sản phẩm đã xem và đếm số khách mua, khách bình luận trên sản phẩm đó (API+APP)
 
 - Xây dựng chức năng phiếu giảm giá, khuyến mãi để áp vào sản phẩm khi khách mua hàng, kho điểm tích lũy để mua hàng từ điểm tích lũy.

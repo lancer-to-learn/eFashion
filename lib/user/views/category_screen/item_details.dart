@@ -13,10 +13,6 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print("purple: ${Colors.purple.value}");
-    // print("blue: ${Colors.blue.value}");
-    // print("black: ${Colors.black.value}");
-
     var controller = Get.put(ProductController());
 
     return WillPopScope(
