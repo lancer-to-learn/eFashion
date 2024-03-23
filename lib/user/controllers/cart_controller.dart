@@ -73,10 +73,14 @@ class CartController extends GetxController {
       'order_by_postalcode': postalcodeController.text,
       'shipping_method': "Home Delivery",
       'payment_method': orderPaymentMethod,
+
       'order_placed': true,
       'order_confirmed': false,
-      'order_delivered': false,
+      'order_on_prepared': false,
       'order_on_delivery': false,
+      'order_delivered': false,
+      'order_cancelled': false,
+
       'total_amount': totalAmount,
       'orders': FieldValue.arrayUnion(products),
       'vendors': FieldValue.arrayUnion(vendors)

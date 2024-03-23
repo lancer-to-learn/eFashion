@@ -35,6 +35,11 @@ class OrdersDetails extends StatelessWidget {
                     title: "Confirmed",
                     showDone: data['order_confirmed']),
                 orderStatus(
+                    color: Colors.amber.shade400,
+                    icon: Icons.thumb_up,
+                    title: "Prepared",
+                    showDone: data['order_on_prepared']),
+                orderStatus(
                     color: Colors.yellow,
                     icon: Icons.car_crash,
                     title: "On Delivery",
@@ -44,6 +49,11 @@ class OrdersDetails extends StatelessWidget {
                     icon: Icons.done_all_rounded,
                     title: "Delivered",
                     showDone: data['order_delivered']),
+                orderStatus(
+                    color: Colors.black12,
+                    icon: Icons.done_all_rounded,
+                    title: "Delivered",
+                    showDone: data['order_cancelled']),
                 const Divider(),
                 10.heightBox,
                 Column(
@@ -142,9 +152,13 @@ class OrdersDetails extends StatelessWidget {
                       ],
                     );
                   }).toList(),
-                ).box.outerShadowMd.white.margin(const EdgeInsets.only(bottom: 4)).make(),
+                )
+                    .box
+                    .outerShadowMd
+                    .white
+                    .margin(const EdgeInsets.only(bottom: 4))
+                    .make(),
                 20.heightBox,
-                
               ],
             ),
           ),

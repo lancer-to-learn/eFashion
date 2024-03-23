@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/lists.dart';
+import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/controllers/product_controller.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
 import 'package:get/get.dart';
+
+import '../../../common/widgets/loading_indicator.dart';
 
 // import 'package:e_fashion/views/chat_screen/chat_screen.dart';
 
@@ -272,48 +276,79 @@ class ItemDetails extends StatelessWidget {
                     ),
                     20.heightBox,
 
-                    //products you may like section
-                    // productYouMayAlsoLike.text
-                    //     .fontFamily(bold)
-                    //     .size(16)
-                    //     .color(darkFontGrey)
-                    //     .make(),
-                    // 10.heightBox,
+                    //products you may like/similar products section
+                    productYouMayAlsoLike.text
+                        .fontFamily(bold)
+                        .size(16)
+                        .color(darkFontGrey)
+                        .make(),
+                    10.heightBox,
 
-                    // SingleChildScrollView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     child: Row(
-                    //       children: List.generate(
-                    //           6,
-                    //           (index) => Column(
-                    //                 crossAxisAlignment:
-                    //                     CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Image.asset(imgFc1,
-                    //                       width: 150, fit: BoxFit.cover),
-                    //                   10.heightBox,
-                    //                   "Comple"
-                    //                       .text
-                    //                       .fontFamily(semibold)
-                    //                       .color(darkFontGrey)
-                    //                       .make(),
-                    //                   10.heightBox,
-                    //                   "\$600"
-                    //                       .text
-                    //                       .color(redColor)
-                    //                       .fontFamily(bold)
-                    //                       .size(16)
-                    //                       .make(),
-                    //                 ],
-                    //               )
-                    //                   .box
-                    //                   .white
-                    //                   .margin(const EdgeInsets.symmetric(
-                    //                       horizontal: 4))
-                    //                   .roundedSM
-                    //                   .padding(const EdgeInsets.all(8))
-                    //                   .make()),
-                    //     )),
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: FutureBuilder(
+                            future: FirestoreServices.getSimilarProducts(
+                                data['p_category']),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(child: loadingIndicator());
+                              } else if (snapshot.data!.docs.isEmpty) {
+                                return "No featured products"
+                                    .text
+                                    .white
+                                    .makeCentered();
+                              } else {
+                                var featuredData = snapshot.data!.docs;
+
+                                return Row(
+                                  children: List.generate(
+                                      featuredData.length,
+                                      (index) => Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.network(
+                                                  featuredData[index]['p_imgs']
+                                                      [0],
+                                                  width: 130,
+                                                  height: 130,
+                                                  // fit: BoxFit.fitHeight),
+                                                  fit: BoxFit.cover),
+                                              10.heightBox,
+                                              "${featuredData[index]['p_name']}"
+                                                  .text
+                                                  .fontFamily(semibold)
+                                                  .color(darkFontGrey)
+                                                  .make(),
+                                              10.heightBox,
+                                              "${featuredData[index]['p_price']}"
+                                                  .numCurrency
+                                                  .text
+                                                  .color(redColor)
+                                                  .fontFamily(bold)
+                                                  .size(16)
+                                                  .make(),
+                                            ],
+                                          )
+                                              .box
+                                              .white
+                                              .margin(
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4))
+                                              .roundedSM
+                                              .padding(const EdgeInsets.all(8))
+                                              .make()
+                                              .onTap(() {
+                                            Get.to(() => ItemDetails(
+                                                  title:
+                                                      "${featuredData[index]['p_name']}",
+                                                  data: featuredData[index],
+                                                ));
+                                          })),
+                                );
+                              }
+                            })),
                   ],
                 )),
               )),

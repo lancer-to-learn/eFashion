@@ -22,6 +22,8 @@ samples, guidance on mobile development, and a full API reference.
 
 * adjust splash-creen later.
 * adjust chat-screen in item detail
+* adjust featured/similar products box
+* cant tap on similar products
 * cant add the first featured product (the runaway pre-loved...)
 
 [{color: 4288423856, img:
@@ -30,10 +32,10 @@ k5ygrup4mDeYXKxMBblQoW0Qf5u2, tprice: 297, qty: 3, title: Short-Sleeve Scoop Nec
 
 - Chức năng hiển thị tất cả sản phẩm theo từng danh mục sử dụng Lazy loading để load tiếp sản phẩm khi kéo xuống cuối trang (API và Code)
 
-- (1. đơn hàng mới, 2. Đã xác nhận đơn hàng (thủ công hoặc tự động 30 phút sau khi đơn đặt thành công), 3. Shop đang chuẩn bị hàng, 4. Đang giao hàng, 5. Đã giao thành công, 6. Hủy đơn hàng (chỉ cho phép hủy trước 30 phút sau khi đặt đơn, nếu đang ở bước 3 thì chuyển sang Gửi Yêu cầu hủy đơn cho shop)
+- cho phép hủy đơn hàng trước 30 phút sau khi đặt đơn, nếu đang ở bước "Shop đang chuẩn bị hàng" thì chuyển sang Gửi Yêu cầu hủy đơn cho shop
 
 - Xây dựng chức năng Bình luận, đánh giá sản phẩm đã mua thành công, mỗi lần đánh giá sẽ tặng mã giảm giá hoặc tặng điểm vào kho điểm tích lũy của mình cho lần mua sau (API + App).  
 
-- sản phẩm tương tự, sản phẩm đã xem và đếm số khách mua, khách bình luận trên sản phẩm đó (API+APP)
+- sản phẩm đã xem và đếm số khách mua, khách bình luận trên sản phẩm đó (API+APP)
 
 - Xây dựng chức năng phiếu giảm giá, khuyến mãi để áp vào sản phẩm khi khách mua hàng, kho điểm tích lũy để mua hàng từ điểm tích lũy.

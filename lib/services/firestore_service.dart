@@ -24,6 +24,13 @@ class FirestoreServices {
         .snapshots();
   }
 
+  static getSimilarProducts(category) {
+    return firestore
+        .collection(productsCollection)
+        .where('p_category', isEqualTo: category)
+        .get();
+  }
+
   static filterProduct(filter) {
     return firestore
         .collection(productsCollection)
@@ -139,10 +146,10 @@ class FirestoreServices {
     return firestore.collection(productsCollection).snapshots();
   }
 
-  static getTop10Products() {
+  static getTopProducts(limit) {
     return firestore
         .collection(productsCollection)
-        .orderBy("bought").limit(4)
+        .orderBy("bought").limit(limit)
         .snapshots();
   }
 

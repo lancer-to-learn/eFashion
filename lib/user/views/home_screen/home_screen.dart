@@ -291,7 +291,7 @@ class HomeScreen extends StatelessWidget {
 
                       StreamBuilder(
                           // stream: FirestoreServices.allProducts(),
-                          stream: FirestoreServices.getTop10Products(),
+                          stream: FirestoreServices.getTopProducts(4),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
@@ -325,7 +325,7 @@ class HomeScreen extends StatelessWidget {
                                             .color(darkFontGrey)
                                             .make(),
                                         10.heightBox,
-                                        "${allproductsData[index]['p_price']}"
+                                        "\$${allproductsData[index]['p_price']}"
                                             .text
                                             .color(redColor)
                                             .fontFamily(bold)
