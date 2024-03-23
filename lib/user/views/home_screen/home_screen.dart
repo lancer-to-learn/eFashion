@@ -280,7 +280,7 @@ class HomeScreen extends StatelessWidget {
                       20.heightBox,
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: "Top 10 bought products"
+                        child: "Top 4 best seller products"
                             .text
                             .fontFamily(bold)
                             .color(darkFontGrey)

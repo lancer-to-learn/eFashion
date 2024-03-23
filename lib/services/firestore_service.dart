@@ -140,7 +140,10 @@ class FirestoreServices {
   }
 
   static getTop10Products() {
-    // return firestore.collection(productsCollection).where();
+    return firestore
+        .collection(productsCollection)
+        .orderBy("bought").limit(4)
+        .snapshots();
   }
 
   static getProductsByVendor(uid) {
