@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:flutter/services.dart';
 
@@ -186,5 +187,31 @@ class FirestoreServices {
         .where('vendor_id', isEqualTo: uid)
         .orderBy('p_wishlist'.length)
         .get();
+  }
+
+  static cancellOrder(data) async {
+    if(data["order_on_prepared"] || data["order_on_prepared"])
+    {
+      // data.reference.id
+      firestore.collection(ordersCollection).doc(data.id).update({
+        "order_cancelled": true
+      });
+      return "Your request has been sent to vendor!";
+    }
+    else if (data["order_placed"])
+    {
+      var convertedTime = DateTime.fromMicrosecondsSinceEpoch(data["order_date"].microsecondsSinceEpoch);
+      DateTime orderTime = DateTime.parse(convertedTime.toString());
+      DateTime currentTime = DateTime.now();
+
+      DateTime expriredTime = orderTime.add(const Duration(minutes: 30));
+      if(currentTime.compareTo(expriredTime) >= 0) {
+        return "Time to cancell this order is expired";
+      } else {
+        await firestore.collection(ordersCollection).doc(data.id).delete();
+        return "Order cancelled";
+      }
+    }
+    return "request failed";
   }
 }

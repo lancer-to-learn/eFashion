@@ -33,16 +33,21 @@ class OrdersScreen extends StatelessWidget {
                   itemCount: data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      leading: "${index + 1}".text.fontFamily(bold).color(darkFontGrey).xl.make(),
-                      title: data[index]['order_code']
+                      leading: "${index + 1}"
+                          .text
+                          .fontFamily(bold)
+                          .color(darkFontGrey)
+                          .xl
+                          .make(),
+                      title: DateTime.fromMicrosecondsSinceEpoch(
+                              data[index]['order_date'].microsecondsSinceEpoch)
                           .toString()
                           .text
                           .color(redColor)
                           .fontFamily(semibold)
                           .make(),
-                      subtitle: data[index]['total_amount']
+                      subtitle: "Total price: \$${data[index]['total_amount']}"
                           .toString()
-                          .numCurrency
                           .text
                           .fontFamily(bold)
                           .make(),

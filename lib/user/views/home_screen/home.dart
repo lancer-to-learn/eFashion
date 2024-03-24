@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
         showDialog(
           barrierDismissible: false,
           context: context, 
-          builder: (context) => exitDialog(context));
+          builder: (context) => exitDialog(context, "Are you sure you want to exit?"));
         return false;
       },
       child: Scaffold(

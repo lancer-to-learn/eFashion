@@ -126,7 +126,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return products;
   }
   getPagingProduct(filter, lastProduct) {
-    productMethod = FirestoreServices.pagingProduct(filter, lastProduct);
+    // productMethod = FirestoreServices.pagingProduct(filter, lastProduct);
   }
   search(keyword) {
     isSearch = true;

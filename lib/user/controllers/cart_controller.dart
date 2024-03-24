@@ -127,4 +127,10 @@ class CartController extends GetxController {
       firestore.collection(cartCollection).doc(productSnapshot[i].id).delete();
     }
   }
+
+  calculateOrderExpiredTime(time){
+    var convertedTime = DateTime.fromMicrosecondsSinceEpoch(time.microsecondsSinceEpoch);
+    DateTime orderTime = DateTime.parse(convertedTime.toString());
+    return (orderTime.add(const Duration(minutes: 30))).toString();
+  }
 }

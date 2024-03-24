@@ -1,4 +1,8 @@
+import 'package:e_fashion/common/widgets/exit_dialog.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/services/firestore_service.dart';
+import 'package:e_fashion/user/controllers/cart_controller.dart';
+import '../../../common/widgets/our_button.dart';
 import 'components/order_place_details.dart';
 import 'components/order_status.dart';
 import 'package:intl/intl.dart' as intl;
@@ -36,9 +40,11 @@ class OrdersDetails extends StatelessWidget {
                     showDone: data['order_confirmed']),
                 orderStatus(
                     color: Colors.amber.shade400,
-                    icon: Icons.thumb_up,
-                    title: "Prepared",
-                    showDone: data['order_on_prepared']),
+                    icon: Icons.add_card_outlined,
+                    title: "Preparing",
+                    showDone: data['order_on_prepared']
+                        ? data['order_on_prepared']
+                        : false),
                 orderStatus(
                     color: Colors.yellow,
                     icon: Icons.car_crash,
@@ -50,9 +56,9 @@ class OrdersDetails extends StatelessWidget {
                     title: "Delivered",
                     showDone: data['order_delivered']),
                 orderStatus(
-                    color: Colors.black12,
-                    icon: Icons.done_all_rounded,
-                    title: "Delivered",
+                    color: Colors.black,
+                    icon: Icons.cancel_presentation,
+                    title: "Cancelled",
                     showDone: data['order_cancelled']),
                 const Divider(),
                 10.heightBox,
@@ -159,6 +165,37 @@ class OrdersDetails extends StatelessWidget {
                     .margin(const EdgeInsets.only(bottom: 4))
                     .make(),
                 20.heightBox,
+                "Cancell order is available until ${CartController().calculateOrderExpiredTime(data["order_date"])}"
+                    .text
+                    .size(16)
+                    .color(darkFontGrey)
+                    .fontFamily(semibold)
+                    .makeCentered(),
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: ourButton(
+                      color: redColor,
+                      onPress: () async {
+                        if (await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => exitDialog(context,
+                                    "Are you sure you want to cancell this order?")) ==
+                            true) {
+                          try {
+                            var res =
+                                await FirestoreServices.cancellOrder(data);
+                            VxToast.show(context, msg: res);
+                          } catch (e) {
+                            print(e.toString());
+                            VxToast.show(context, msg: "Try again later!");
+                          }
+                        }
+                      },
+                      textColor: whiteColor,
+                      title: "Cancell order"),
+                ),
               ],
             ),
           ),
