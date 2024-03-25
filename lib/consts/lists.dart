@@ -37,8 +37,6 @@ const categoriesImages = [
 ];
 
 const itemDetailButtonsList = [
-  video,
-  review,
   privacyPolicy,
   returnPolicy,
   supportPolicy

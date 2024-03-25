@@ -139,8 +139,12 @@ class FirestoreServices {
   }
 
   static getProduct(id) {
-    return firestore
-        .collection(productsCollection).doc(id).get();
+    return firestore.collection(productsCollection).doc(id).get();
+  }
+
+  static getOneUser(id) {
+    return firestore.collection(usersCollections)
+        .doc(id).get();
   }
 
   static allProducts() {
@@ -150,7 +154,8 @@ class FirestoreServices {
   static getTopProducts(limit) {
     return firestore
         .collection(productsCollection)
-        .orderBy("bought").limit(limit)
+        .orderBy("bought")
+        .limit(limit)
         .snapshots();
   }
 
@@ -190,22 +195,21 @@ class FirestoreServices {
   }
 
   static cancellOrder(data) async {
-    if(data["order_on_prepared"] || data["order_on_prepared"])
-    {
+    if (data["order_on_prepared"] || data["order_confirmed"]) {
       // data.reference.id
-      firestore.collection(ordersCollection).doc(data.id).update({
-        "order_cancelled": true
-      });
+      firestore
+          .collection(ordersCollection)
+          .doc(data.id)
+          .update({"order_cancelled": true});
       return "Your request has been sent to vendor!";
-    }
-    else if (data["order_placed"])
-    {
-      var convertedTime = DateTime.fromMicrosecondsSinceEpoch(data["order_date"].microsecondsSinceEpoch);
+    } else if (data["order_placed"]) {
+      var convertedTime = DateTime.fromMicrosecondsSinceEpoch(
+          data["order_date"].microsecondsSinceEpoch);
       DateTime orderTime = DateTime.parse(convertedTime.toString());
       DateTime currentTime = DateTime.now();
 
       DateTime expriredTime = orderTime.add(const Duration(minutes: 30));
-      if(currentTime.compareTo(expriredTime) >= 0) {
+      if (currentTime.compareTo(expriredTime) >= 0) {
         return "Time to cancell this order is expired";
       } else {
         await firestore.collection(ordersCollection).doc(data.id).delete();

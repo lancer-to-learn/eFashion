@@ -111,8 +111,8 @@ class ProfileScreen extends StatelessWidget {
 
                         FutureBuilder(
                             future: FirestoreServices.getCounts(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot snapshot) {
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
                               if (!snapshot.hasData) {
                                 return Center(child: loadingIndicator());
                               } else {

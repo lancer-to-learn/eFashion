@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comment_box/comment/comment.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/lists.dart';
 import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/controllers/product_controller.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
+import 'package:e_fashion/user/views/category_screen/comment_dialog.dart';
 import 'package:get/get.dart';
 
 import '../../../common/widgets/loading_indicator.dart';
@@ -17,6 +19,36 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController commentController = TextEditingController();
+    List filedata = [
+      {
+        'name': 'Chuks Okwuenu',
+        'pic': 'https://picsum.photos/300/30',
+        'message': 'I love to code',
+        'date': '2021-01-01 12:00:00'
+      },
+      {
+        'name': 'Biggi Man',
+        'pic':
+            'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
+        'message': 'Very cool',
+        'date': '2021-01-01 12:00:00'
+      },
+      {
+        'name': 'Tunde Martins',
+        'pic': 'assets/img/userpic.jpg',
+        'message': 'Very cool',
+        'date': '2021-01-01 12:00:00'
+      },
+      {
+        'name': 'Biggi Man',
+        'pic': 'https://picsum.photos/300/30',
+        'message': 'Very cool',
+        'date': '2021-01-01 12:00:00'
+      },
+    ];
+
     var controller = Get.put(ProductController());
 
     return WillPopScope(
@@ -276,13 +308,85 @@ class ItemDetails extends StatelessWidget {
                     ),
                     20.heightBox,
 
+                    "Comments"
+                        .toString()
+                        .text
+                        .fontFamily(bold)
+                        .size(17)
+                        .color(Colors.black)
+                        .make(),
+                    // comment section
+                    StreamBuilder(
+                        stream: FirestoreServices.getUser(currentUser!.uid),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(redColor)));
+                          } else {
+                            var userData = snapshot.data!.docs[0];
+
+                            return SizedBox(
+                              height: 400,
+                              child: CommentBox(
+                                  userImage: CommentBox.commentImageParser(
+                                      imageURLorPath: userData['imageUrl']),
+                                  labelText: 'Write a comment...',
+                                  errorText: 'Comment cannot be blank',
+                                  withBorder: false,
+                                  sendButtonMethod: () {
+                                    if (formKey.currentState!.validate()) {
+                                      controller.addComment(
+                                          data.id,
+                                          commentController.text
+                                              .toString()
+                                              .trim(),
+                                          context);
+                                      commentController.clear();
+                                      FocusScope.of(context).unfocus();
+                                    } else {
+                                      print("Not validated");
+                                    }
+                                  },
+                                  formKey: formKey,
+                                  commentController: commentController,
+                                  backgroundColor: Colors.pink,
+                                  textColor: Colors.white,
+                                  sendWidget: const Icon(Icons.send_sharp,
+                                      size: 30, color: Colors.white),
+                                  child: FutureBuilder(
+                                    future: controller.getAllComment(data.id),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation(
+                                                        redColor)));
+                                      } else if ((snapshot.data as List).isEmpty){
+
+                                        return "No comments yet!".text.color(darkFontGrey).makeCentered();
+                                      }
+                                      else {
+                                        var commentData = snapshot.data;
+
+                                        return commentChild(commentData);
+                                      }
+                                    },
+                                  )),
+                            );
+                          }
+                        }),
+
+                    20.heightBox,
                     //products you may like/similar products section
                     productYouMayAlsoLike.text
                         .fontFamily(bold)
-                        .size(16)
-                        .color(darkFontGrey)
+                        .size(17)
+                        .color(Colors.black)
                         .make(),
-                    10.heightBox,
 
                     SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

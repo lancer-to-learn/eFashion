@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:e_fashion/common/controllers/db_controller.dart';
-import 'package:e_fashion/user/controllers/user_class.dart';
+import 'package:e_fashion/user/models/user_class.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/common/controllers/auth_controller.dart';
 // import 'package:e_fashion/views/admin/auth/login_admin.dart';

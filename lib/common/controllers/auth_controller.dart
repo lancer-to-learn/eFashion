@@ -3,7 +3,7 @@ import 'dart:html';
 import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_fashion/user/controllers/user_class.dart';
+import 'package:e_fashion/user/models/user_class.dart';
 import 'package:e_fashion/common/views/login_screen.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/firebase_consts.dart';

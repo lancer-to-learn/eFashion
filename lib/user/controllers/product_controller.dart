@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:firebase_core/firebase_core.dart';
 import '../models/category_model.dart';
 import 'package:e_fashion/services/firestore_service.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ class ProductController extends GetxController {
   var totalPrice = 0.obs;
 
   var subcat = [];
+  var comments = [];
   var isFav = false.obs;
 
   getSubCategories(title) async {
@@ -90,6 +92,50 @@ class ProductController extends GetxController {
     }, SetOptions(merge: true));
     isFav(false);
     VxToast.show(context, msg: "Removed from wishlist");
+  }
+
+  addComment(docId, cmt, context) async {
+    comments.clear();
+    comments.add({"uid": currentUser!.uid, "cmt": cmt, "time": DateTime.now()});
+    try {
+      await firestore.collection(productsCollection).doc(docId).set(
+          {'p_comments': FieldValue.arrayUnion(comments)},
+          SetOptions(merge: true));
+    } catch (e) {
+      print(e.toString());
+      VxToast.show(context, msg: "Something went wrong!");
+    }
+  }
+
+  getAllComment(docId) async {
+    try {
+      var product = await FirestoreServices.getProduct(docId);
+      //      name': 'Biggi Man',
+      //     'pic': 'https://picsum.photos/300/30',
+      //     'message': 'Very cool',
+      //     'date': '2021-01-01 12:00:00'
+      List cmtData = [];
+      for (int i = 0; i < product['p_comments'].length; i++) {
+        var user =
+            await FirestoreServices.getOneUser(product['p_comments'][i]['uid']);
+
+        var convertedTime = DateTime.fromMicrosecondsSinceEpoch(
+            product['p_comments'][i]['time'].microsecondsSinceEpoch);
+        DateTime orderTime = DateTime.parse(convertedTime.toString());
+
+        cmtData.add({
+          "name": user['name'],
+          "pic": user['imageUrl'],
+          "message": product['p_comments'][i]['cmt'],
+          "date": orderTime.toString()
+        });
+      }
+
+      return cmtData;
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
   }
 
   checkIfFav(data) async {
