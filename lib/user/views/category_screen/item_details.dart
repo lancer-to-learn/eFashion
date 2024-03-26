@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comment_box/comment/comment.dart';
 import 'package:e_fashion/consts/consts.dart';
@@ -6,6 +8,10 @@ import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/controllers/product_controller.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
 import 'package:e_fashion/user/views/category_screen/comment_dialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../common/widgets/loading_indicator.dart';
@@ -21,34 +27,6 @@ class ItemDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     final TextEditingController commentController = TextEditingController();
-    List filedata = [
-      {
-        'name': 'Chuks Okwuenu',
-        'pic': 'https://picsum.photos/300/30',
-        'message': 'I love to code',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Biggi Man',
-        'pic':
-            'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Tunde Martins',
-        'pic': 'assets/img/userpic.jpg',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Biggi Man',
-        'pic': 'https://picsum.photos/300/30',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-    ];
-
     var controller = Get.put(ProductController());
 
     return WillPopScope(
@@ -113,17 +91,45 @@ class ItemDetails extends StatelessWidget {
                         .fontFamily(semibold)
                         .make(),
                     10.heightBox,
-                    //rating
-                    VxRating(
-                      isSelectable: false,
-                      value: double.parse(data['p_rating']),
-                      onRatingUpdate: (value) {},
-                      normalColor: textfieldGrey,
-                      selectionColor: golden,
-                      count: 5,
-                      size: 25,
-                      maxRating: 5,
+
+                    Row(
+                      children: [
+                        //rating
+                        VxRating(
+                          isSelectable: false,
+                          value: double.parse(data['p_rating']),
+                          onRatingUpdate: (value) {},
+                          normalColor: textfieldGrey,
+                          selectionColor: golden,
+                          count: 5,
+                          size: 25,
+                          maxRating: 5,
+                        ),
+
+                        Column(children: [
+                          5.heightBox,
+                          FutureBuilder(
+                              future: controller.countBought(data.id),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation(
+                                              redColor)));
+                                } else {
+                                  return "(${snapshot.data} sold)"
+                                      .toString()
+                                      .text
+                                      .size(15)
+                                      .fontFamily(semibold)
+                                      .color(textfieldGrey)
+                                      .make();
+                                }
+                              }),
+                        ])
+                      ],
                     ),
+
                     10.heightBox,
                     "${data['p_price']}"
                         .numCurrency
@@ -134,7 +140,6 @@ class ItemDetails extends StatelessWidget {
                         .make(),
 
                     10.heightBox,
-
                     Row(
                       children: [
                         Expanded(
@@ -308,13 +313,26 @@ class ItemDetails extends StatelessWidget {
                     ),
                     20.heightBox,
 
-                    "Comments"
-                        .toString()
-                        .text
-                        .fontFamily(bold)
-                        .size(17)
-                        .color(Colors.black)
-                        .make(),
+                    //comment section
+                    FutureBuilder(
+                        future: controller.countComment(data.id),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation(redColor)));
+                          } else {
+                            return "Comments (${snapshot.data})"
+                                .toString()
+                                .text
+                                .fontFamily(bold)
+                                .size(17)
+                                .color(Colors.black)
+                                .make();
+                          }
+                        }),
+
                     // comment section
                     StreamBuilder(
                         stream: FirestoreServices.getUser(currentUser!.uid),
@@ -365,11 +383,13 @@ class ItemDetails extends StatelessWidget {
                                                 valueColor:
                                                     AlwaysStoppedAnimation(
                                                         redColor)));
-                                      } else if ((snapshot.data as List).isEmpty){
-
-                                        return "No comments yet!".text.color(darkFontGrey).makeCentered();
-                                      }
-                                      else {
+                                      } else if ((snapshot.data as List)
+                                          .isEmpty) {
+                                        return "No comments yet!"
+                                            .text
+                                            .color(darkFontGrey)
+                                            .makeCentered();
+                                      } else {
                                         var commentData = snapshot.data;
 
                                         return commentChild(commentData);

@@ -30,9 +30,7 @@ samples, guidance on mobile development, and a full API reference.
 https://res.cloudinary.com/natscloud/image/upload/v1684500861/eFashion/women_indoor_2_1_nirecb.jpg, vendor_id: 
 k5ygrup4mDeYXKxMBblQoW0Qf5u2, tprice: 297, qty: 3, title: Short-Sleeve Scoop Neck Swing Dress}]
 
-- sản phẩm đã xem và số khách mua
-
-- Xây dựng chức năng Bình luận, đếm số khách bình luận trên sản phẩm đó
+- sản phẩm đã xem
 
 - Đánh giá sản phẩm đã mua thành công, mỗi lần đánh giá sẽ tặng điểm vào kho điểm tích lũy của mình cho lần mua sau 
 

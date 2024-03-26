@@ -115,6 +115,7 @@ class ProductController extends GetxController {
       //     'message': 'Very cool',
       //     'date': '2021-01-01 12:00:00'
       List cmtData = [];
+
       for (int i = 0; i < product['p_comments'].length; i++) {
         var user =
             await FirestoreServices.getOneUser(product['p_comments'][i]['uid']);
@@ -136,6 +137,23 @@ class ProductController extends GetxController {
       print(e.toString());
       return [];
     }
+  }
+
+  countComment(docId) async {
+    var product = await FirestoreServices.getProduct(docId);
+    if (product.data().containsKey('p_comments')) {
+      return product['p_comments'].length;
+    }
+    return 0;
+  }
+
+  countBought(docId) async {
+    var product = await FirestoreServices.getProduct(docId);
+    if(product.data().containsKey('bought'))
+    {
+      return product['bought'];
+    }
+    return 0;
   }
 
   checkIfFav(data) async {
