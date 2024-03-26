@@ -78,4 +78,5 @@ const dashboard = "Dashboard",
   featured = "Featured",
   edit = "Edit",
   remove = "Remove",
-  unpaid = "Unpaid";
+  unpaid = "Unpaid",
+  couponImg = "https://www.bing.com/ck/a?!&&p=59103cfbba034c83JmltdHM9MTcxMTQxMTIwMCZpZ3VpZD0wYzQxYzJiMi03ZTcxLTYxMjMtMzY5ZS1kM2RlN2Y2MzYwZmQmaW5zaWQ9NTU0Nw&ptn=3&ver=2&hsh=3&fclid=0c41c2b2-7e71-6123-369e-d3de7f6360fd&u=a1L2ltYWdlcy9zZWFyY2g_cT1jb3Vwb24lMjBpbWFnZSZGT1JNPUlRRlJCQSZpZD00RTg2OUM4ODlGODhFNUFGRTczQjc4M0NGMjEwQ0I4NEVEMThDRDFD&ntb=1";

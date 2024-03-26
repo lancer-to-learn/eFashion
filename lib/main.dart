@@ -1,3 +1,4 @@
+import 'package:e_fashion/admin/login_admin_screen.dart';
 import 'package:e_fashion/common/views/login_screen.dart';
 import 'package:e_fashion/common/views/splash_screen.dart';
 import 'package:e_fashion/user/views/home_screen/home.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
       // home: const Home(),
       // home: const LoginScreen(),
       home: const SplashScreen(),
+      // home: const LoginAdminScreen(),
     );
   }
 }

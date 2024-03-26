@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class FirestoreServices {
   static getUser(uid) {
@@ -163,6 +164,13 @@ class FirestoreServices {
     return firestore
         .collection(productsCollection)
         .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
+  static getCouponsByVendor(uid) {
+    return firestore
+        .collection(couponCollection)
+        .where('vendor', isEqualTo: uid)
         .snapshots();
   }
 

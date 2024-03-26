@@ -298,10 +298,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
+      sha256: e2a421b7e59244faef694ba7b30562e489c2b489866e505074eb005cd7060db7
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -372,10 +372,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: b6951e25b795d053a6ba03af5f710069c99349de9341af95155d52665cb4607c
+      sha256: "26222b01a0c9a2c8fe02fc90b8208bd3325da5ed1f4a2acabf75939031ac0bdd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.9"
+    version: "1.0.7"
   image_picker_android:
     dependency: transitive
     description:
@@ -436,10 +436,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.1"
   io:
     dependency: transitive
     description:
@@ -456,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.5"
+  lazy_loading_list_view:
+    dependency: "direct main"
+    description:
+      name: lazy_loading_list_view
+      sha256: "7b9461c8cf26f9b4494ce380801c0f8eda24b23305c82be5885eff2022246c4e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   leak_tracker:
     dependency: transitive
     description:
@@ -484,10 +492,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "5e4a9cd06d447758280a8ac2405101e0e2094d2a1dbdd3756aec3fe7775ba593"
+      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "3.0.0"
   logging:
     dependency: transitive
     description:
@@ -769,10 +777,10 @@ packages:
     dependency: "direct main"
     description:
       name: velocity_x
-      sha256: b70a9de038ac2265cba77c030487463a75c66d65da8d4d917dc6834293ff73a3
+      sha256: "38585b8ed87c17ccb42a5c13d55bdafdc65e7cd3f41dceb61c38714c758fa228"
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.0"
+    version: "4.1.2"
   vm_service:
     dependency: transitive
     description:
@@ -831,4 +839,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.7.0"
+  flutter: ">=3.10.0"

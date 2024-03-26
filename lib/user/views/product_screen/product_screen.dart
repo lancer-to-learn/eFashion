@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
 import 'package:e_fashion/consts/consts.dart';
-import 'package:e_fashion/user/controllers/home_controller.dart';
 import 'package:e_fashion/user/controllers/product_controller.dart';
 import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/views/category_screen/item_details.dart';
@@ -11,10 +10,8 @@ import 'package:e_fashion/common/widgets/bg_widget.dart';
 import 'package:e_fashion/common/widgets/loading_indicator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
-import '../../models/category_model.dart';
 import '../../models/filter_model.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -55,7 +52,7 @@ class _ProductScreenState extends State<ProductScreen> {
     super.dispose();
   }
 
-  void _scrollListener() {
+  void _scrollListener() async {
     if (_scrollController.position.atEdge) {
       if (_scrollController.position.pixels == 0) {
         // Top of the scroll view
@@ -68,33 +65,34 @@ class _ProductScreenState extends State<ProductScreen> {
         print('Scrolled to the bottom');
         currentPage = currentPage + 1;
       }
-      setState(() {currentPage = currentPage; isLoading = true;});
+      controller.isLoading(true);
+      await Future.delayed(const Duration(seconds: 1));
+      setState(() {currentPage = currentPage;});
+      // await Future.delayed(const Duration(seconds: 1));
+      controller.isLoading(false);
     }
   }
 
   getAllProducts() async {
-    setState(() {
-      isLoading = true; // Set loading state to true when fetching data starts
-    });
     try {
       // Simulate fetching data with a delay
-      await Future.delayed(const Duration(seconds: 2)); // Replace with actual data fetching logic
-      setState(() {
+      await Future.delayed(const Duration(seconds: 1)); // Replace with actual data fetching logic
+      setState(() async {
         // Update products variable with fetched data
         productMethod = FirestoreServices.allProducts();
-        isLoading = false; // Set loading state to false after data is fetched
+        controller.isLoading(false);
       });
     } catch (error) {
       setState(() {
         // Handle error state here
-        isLoading = false; // Set loading state to false in case of error
+        controller.isLoading(false);
       });
     }
-    print("loading: ${isLoading}");
   }
   getProducts(data) {
     var products = data;
-    if (products.isNotEmpty) {
+    // var products = getAllProducts();
+      if (products!.isNotEmpty) {
       if (isSearch && kw != null) {
       products = products.where(
                     (element) => element['p_name']
@@ -120,13 +118,10 @@ class _ProductScreenState extends State<ProductScreen> {
       }
     }
     print("current page: ${currentPage}");
-    print("is loading: ${isLoading}");
-    Future.delayed(const Duration(seconds: 2));
+    controller.isLoading(false);
+    print("is loading: ${controller.isLoading.value}");
     isLoading = false;
     return products;
-  }
-  getPagingProduct(filter, lastProduct) {
-    // productMethod = FirestoreServices.pagingProduct(filter, lastProduct);
   }
   search(keyword) {
     isSearch = true;
@@ -148,13 +143,14 @@ class _ProductScreenState extends State<ProductScreen> {
     // productMethod = FirestoreServices.filterProduct(filter);
     if (isChooseFilter[index]) {
       isChooseFilter[index] = false;
+      filter = null;
     } else {
       for (int i = 0; i < filters.length; i++) {
         isChooseFilter[i] = false;
       }
       isChooseFilter[index] = true;
+      filter = newFilter;
     }
-    filter = newFilter;
   }
   switchCategory(title) {
     isSearch = false;
@@ -202,6 +198,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             fillColor: whiteColor,
                             hintText: searchAnything,
                             hintStyle: TextStyle(color: textfieldGrey),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10)
                           ),
                         ),
                       ),
@@ -243,7 +240,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: List.generate(
                       filters.length,
                       (index) => ourButton(
-                        color: isChooseFilter[index] ? whiteColor : lightGolden,
+                        color: isChooseFilter[index] ? lightGolden : whiteColor,
                         textColor: darkFontGrey,
                         title: filters[index].name,
                         onPress: () {
@@ -251,23 +248,6 @@ class _ProductScreenState extends State<ProductScreen> {
                           setState(() {});
                         }
                       )
-                      // (index) => "${filters[index].name}"
-                      //             .text
-                      //             .size(12)
-                      //             .fontFamily(semibold)
-                      //             .color(darkFontGrey)
-                      //             .makeCentered()
-                      //             .box
-                      //             .white
-                      //             .rounded
-                      //             .size(80, 40)
-                      //             .margin(
-                      //                 const EdgeInsets.symmetric(horizontal: 4))
-                      //             .make()
-                      //             .onTap(() {
-                      //           filterProducts(filters[index]);
-                      //           setState(() {});
-                      //         })
                       ),
                     )
                   ),),
@@ -278,8 +258,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       List<Map<String, dynamic>> data = snapshot.data!.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+                    .map((doc) => doc.data() as Map<String, dynamic>)
+                    .toList();
                       var products = getProducts(data);
                       if (!snapshot.hasData) {
                         return Expanded(
@@ -294,9 +274,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         List<Map<String, dynamic>> data = snapshot.data!.docs
                           .map((doc) => doc.data() as Map<String, dynamic>)
                           .toList();
-                        return isLoading ? const Center(
-                child: CircularProgressIndicator(),
-              ): Expanded(
+                        return Expanded(
                           child: GridView.builder(
                             physics: const BouncingScrollPhysics(),
                             controller: _scrollController,
@@ -324,7 +302,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         );
                       }
                     }),
-              ],
+                    controller.isLoading.value ? const Center(
+                          child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(redColor),),) : 10.heightBox
+                    ],
             )));
   }
 
