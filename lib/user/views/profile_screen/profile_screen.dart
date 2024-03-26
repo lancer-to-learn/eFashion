@@ -7,6 +7,7 @@ import 'package:e_fashion/common/widgets/loading_indicator.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/consts/lists.dart';
 import 'package:e_fashion/services/firestore_service.dart';
+import 'package:e_fashion/user/views/category_screen/item_details.dart';
 import 'package:e_fashion/user/views/profile_screen/components/detail_card.dart';
 import 'package:e_fashion/user/views/profile_screen/edit_profile.dart';
 import 'package:get/get.dart';
@@ -22,8 +23,10 @@ class ProfileScreen extends StatelessWidget {
     var controller = Get.put(ProfileController());
 
     return bgWidget(
-        child: Scaffold(
-            body: StreamBuilder(
+        // child: Scaffold(
+        child: SingleChildScrollView(
+            // resizeToAvoidBottomInset: false,
+            child: StreamBuilder(
                 stream: FirestoreServices.getUser(currentUser!.uid),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -118,6 +121,7 @@ class ProfileScreen extends StatelessWidget {
                               } else {
                                 var countData = snapshot.data;
 
+                                //buttons section
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -138,25 +142,6 @@ class ProfileScreen extends StatelessWidget {
                                 );
                               }
                             }),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: [
-                        //     detailsCard(
-                        //         count: "${data['cart_count']}",
-                        //         title: "Your Cart",
-                        //         width: context.screenWidth / 3.4),
-                        //     detailsCard(
-                        //         count: "${data['wishlist_count']}",
-                        //         title: "Your Wishlist",
-                        //         width: context.screenWidth / 3.4),
-                        //     detailsCard(
-                        //         count: "${data['order_count']}",
-                        //         title: "Your Orders",
-                        //         width: context.screenWidth / 3.4),
-                        //   ],
-                        // ),
-
-                        //buttons section
 
                         ListView.separated(
                                 shrinkWrap: true,
@@ -200,6 +185,85 @@ class ProfileScreen extends StatelessWidget {
                             .box
                             .color(redColor)
                             .make(),
+
+                        10.heightBox,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: "Watched products"
+                              .text
+                              .fontFamily(bold)
+                              .color(darkFontGrey)
+                              .size(15)
+                              .make(),
+                        )
+                            .box
+                            .padding(const EdgeInsets.symmetric(horizontal: 15))
+                            .make(),
+
+                        SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: FutureBuilder(
+                                future:
+                                    controller.getSeenProducts(data['seen']),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Center(child: loadingIndicator());
+                                  } else if ((snapshot.data as List).isEmpty) {
+                                    return "No watched products"
+                                        .text
+                                        .white
+                                        .makeCentered();
+                                  } else {
+                                    var featuredData = snapshot.data as List;
+
+                                    return Row(
+                                      children: List.generate(
+                                          featuredData.length,
+                                          (index) => Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Image.network(
+                                                      featuredData[index]
+                                                          ['p_imgs'][0],
+                                                      width: 90,
+                                                      height: 90,
+                                                      // fit: BoxFit.fitHeight),
+                                                      fit: BoxFit.cover),
+                                                  10.heightBox,
+                                                  "${featuredData[index]['p_name']}"
+                                                      .text
+                                                      .fontFamily(semibold)
+                                                      .color(darkFontGrey)
+                                                      .make(),
+                                                  10.heightBox,
+                                                  "${featuredData[index]['p_price']}"
+                                                      .numCurrency
+                                                      .text
+                                                      .color(redColor)
+                                                      .fontFamily(bold)
+                                                      .size(16)
+                                                      .make(),
+                                                ],
+                                              )
+                                                  .box
+                                                  .white
+                                                  .margin(const EdgeInsets
+                                                      .symmetric(horizontal: 4))
+                                                  .roundedSM
+                                                  .padding(
+                                                      const EdgeInsets.all(8))
+                                                  .make()
+                                                  .onTap(() {
+                                                Get.to(() => ItemDetails(
+                                                      title:
+                                                          "${featuredData[index]['p_name']}",
+                                                      data: featuredData[index],
+                                                    ));
+                                              })),
+                                    );
+                                  }
+                                })),
                       ],
                     ));
                   }

@@ -145,22 +145,26 @@ class HomeScreen extends StatelessWidget {
                               .make()),
                       20.heightBox,
                       SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(
-                                3,
-                                (index) => Column(
-                                      children: [
-                                        featuredButton(
-                                            icon: featuredImages1[index],
-                                            title: featuredTitles1[index]),
-                                        10.heightBox,
-                                        featuredButton(
-                                            icon: index < 2 ? featuredImages2[index] : featuredImages1[0],
-                                            title: index < 2 ? featuredTitles2[index] : featuredTitles1[0]),
-                                      ],
-                                    )).toList(),
-                          ),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(
+                              3,
+                              (index) => Column(
+                                    children: [
+                                      featuredButton(
+                                          icon: featuredImages1[index],
+                                          title: featuredTitles1[index]),
+                                      10.heightBox,
+                                      featuredButton(
+                                          icon: index < 2
+                                              ? featuredImages2[index]
+                                              : featuredImages1[0],
+                                          title: index < 2
+                                              ? featuredTitles2[index]
+                                              : featuredTitles1[0]),
+                                    ],
+                                  )).toList(),
+                        ),
                       ),
 
                       // featured product
@@ -213,7 +217,8 @@ class HomeScreen extends StatelessWidget {
                                                                 ['p_imgs'][0],
                                                             width: 130,
                                                             height: 130,
-                                                            fit: BoxFit.fitHeight),
+                                                            fit: BoxFit
+                                                                .fitHeight),
                                                         10.heightBox,
                                                         "${featuredData[index]['p_name']}"
                                                             .text
@@ -234,7 +239,7 @@ class HomeScreen extends StatelessWidget {
                                                         .box
                                                         .white
                                                         .margin(const EdgeInsets
-                                                                .symmetric(
+                                                            .symmetric(
                                                             horizontal: 4))
                                                         .roundedSM
                                                         .padding(

@@ -149,11 +149,16 @@ class ProductController extends GetxController {
 
   countBought(docId) async {
     var product = await FirestoreServices.getProduct(docId);
-    if(product.data().containsKey('bought'))
-    {
+    if (product.data().containsKey('bought')) {
       return product['bought'];
     }
     return 0;
+  }
+
+  addProductToSeen(docId, uId) async {
+    await firestore.collection(usersCollections).doc(uId).set({
+      'seen': FieldValue.arrayUnion([docId])
+    }, SetOptions(merge: true));
   }
 
   checkIfFav(data) async {

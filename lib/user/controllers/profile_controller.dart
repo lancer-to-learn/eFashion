@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
+import 'package:e_fashion/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -99,5 +100,14 @@ class ProfileController extends GetxController {
     await currentUser!.reauthenticateWithCredential(cred).then((value) {
       currentUser!.updatePassword(newpassword);
     });
+  }
+
+  getSeenProducts(seenList) async{
+    List products = [];
+    for(int i=0;i<seenList.length;i++)
+    {
+      products.add(await FirestoreServices.getProduct(seenList[i]));
+    }
+    return products;
   }
 }

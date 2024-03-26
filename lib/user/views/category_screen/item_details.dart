@@ -29,6 +29,7 @@ class ItemDetails extends StatelessWidget {
     final TextEditingController commentController = TextEditingController();
     var controller = Get.put(ProductController());
 
+    controller.addProductToSeen(data.id, currentUser!.uid);
     return WillPopScope(
       onWillPop: () async {
         controller.resetValue();
