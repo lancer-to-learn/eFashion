@@ -98,7 +98,7 @@ class ItemDetails extends StatelessWidget {
                         //rating
                         VxRating(
                           isSelectable: false,
-                          value: double.parse(data['p_rating']),
+                          value: double.parse(data['p_rating'].toString()),
                           onRatingUpdate: (value) {},
                           normalColor: textfieldGrey,
                           selectionColor: golden,

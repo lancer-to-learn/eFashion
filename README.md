@@ -25,11 +25,12 @@ samples, guidance on mobile development, and a full API reference.
 * adjust featured/similar products box
 * cant tap on similar products
 * cant add the first featured product (the runaway pre-loved...)
+* orders not in order
 
 [{color: 4288423856, img:
 https://res.cloudinary.com/natscloud/image/upload/v1684500861/eFashion/women_indoor_2_1_nirecb.jpg, vendor_id: 
 k5ygrup4mDeYXKxMBblQoW0Qf5u2, tprice: 297, qty: 3, title: Short-Sleeve Scoop Neck Swing Dress}]
 
-- Đánh giá sản phẩm đã mua thành công, mỗi lần đánh giá sẽ tặng điểm vào kho điểm tích lũy của mình cho lần mua sau 
+- mỗi lần đánh giá sẽ tặng điểm vào kho điểm tích lũy của mình cho lần mua sau 
 
 - Xây dựng chức năng phiếu giảm giá, khuyến mãi để áp vào sản phẩm khi khách mua hàng

@@ -1,4 +1,5 @@
 import 'package:e_fashion/common/widgets/exit_dialog.dart';
+import 'package:e_fashion/common/widgets/rate_dialog.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/services/firestore_service.dart';
 import 'package:e_fashion/user/controllers/cart_controller.dart';
@@ -145,14 +146,35 @@ class OrdersDetails extends StatelessWidget {
                           title1: data['orders'][index]['title'],
                           title2: data['orders'][index]['tprice'],
                           d1: "${data['orders'][index]['qty']}x",
-                          d2: "Refundable",
+                          d2: "Non-refundable",
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Container(
-                              width: 30,
-                              height: 20,
-                              color: Color(data['orders'][index]['color'])),
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Container(
+                                  width: 30,
+                                  height: 20,
+                                  color: Color(data['orders'][index]['color'])),
+                            ),
+                            "Do you like this product?"
+                                .text
+                                .color(redColor)
+                                .make()
+                                .onTap(() async {
+                              if (data['order_delivered']) {
+                                await showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) =>
+                                        rateDialog(context, data['orders'][index]['P_id']));
+                              } else {
+                                VxToast.show(context,
+                                    msg: "Product has not yet been delivered");
+                              }
+                            }),
+                          ],
                         ),
                         const Divider(),
                       ],

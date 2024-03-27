@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_fashion/consts/consts.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../models/category_model.dart';
 import 'package:e_fashion/services/firestore_service.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +12,7 @@ class ProductController extends GetxController {
 
   var subcat = [];
   var comments = [];
+  var rates = [];
   var isFav = false.obs;
 
   getSubCategories(title) async {
@@ -105,6 +105,41 @@ class ProductController extends GetxController {
       print(e.toString());
       VxToast.show(context, msg: "Something went wrong!");
     }
+  }
+
+  rateProduct(docId, value) async {
+    rates.clear();
+    var currentProduct = await FirestoreServices.getProduct(docId);
+
+    double total = 0;
+    if (currentProduct.data().containsKey('rates')) {
+      rates.addAll(currentProduct['rates']);
+      for (int i = 0; i < rates.length; i++) {
+        if (rates[i]['uid'] == currentUser!.uid) {
+          rates[i]['rate'] = value;
+        }
+        total += double.parse(rates[i]['rate']) ;
+      }
+      total = total/rates.length;
+    } else {
+      rates.add({"uid": currentUser!.uid, "rate": value});
+      total = value;
+    }
+    // re-update rates
+    await firestore
+        .collection(productsCollection)
+        .doc(docId)
+        .set({'rates': null}, SetOptions(merge: true));
+    await firestore
+        .collection(productsCollection)
+        .doc(docId)
+        .set({'rates': FieldValue.arrayUnion(rates)}, SetOptions(merge: true));
+
+    // calculate product rating
+    await firestore
+        .collection(productsCollection)
+        .doc(docId)
+        .set({'p_rating': total}, SetOptions(merge: true));
   }
 
   getAllComment(docId) async {

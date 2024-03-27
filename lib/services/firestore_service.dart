@@ -143,8 +143,7 @@ class FirestoreServices {
   }
 
   static getOneUser(id) {
-    return firestore.collection(usersCollections)
-        .doc(id).get();
+    return firestore.collection(usersCollections).doc(id).get();
   }
 
   static allProducts() {
