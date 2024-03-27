@@ -9,7 +9,7 @@ class ProductController extends GetxController {
   var quantity = 0.obs;
   var colorIndex = 0.obs;
   var totalPrice = 0.obs;
-
+  var isLoading = false.obs;
   var subcat = [];
   var comments = [];
   var rates = [];

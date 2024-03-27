@@ -1,27 +1,20 @@
-import 'dart:io';
 
-import 'package:e_fashion/admin/home/home_admin_screen.dart';
+import 'package:e_fashion/admin/home/home_admin.dart';
 import 'package:e_fashion/common/controllers/db_controller.dart';
-import 'package:e_fashion/user/models/user_class.dart';
 import 'package:e_fashion/consts/consts.dart';
 import 'package:e_fashion/common/controllers/auth_controller.dart';
 // import 'package:e_fashion/views/admin/auth/login_admin.dart';
 import 'package:e_fashion/common/views/signup_screen.dart';
 import 'package:e_fashion/consts/strings.dart';
-import 'package:e_fashion/user/views/home_screen/home.dart';
-import 'package:e_fashion/user/views/home_screen/home_screen.dart';
 import 'package:e_fashion/common/widgets/applogo_widget.dart';
 import 'package:e_fashion/common/widgets/bg_widget.dart';
 import 'package:e_fashion/common/widgets/custom_textfield.dart';
 import 'package:e_fashion/common/widgets/our_button.dart';
-import 'package:e_fashion/common/widgets/text_style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import '../../consts/lists.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginAdminScreen extends StatelessWidget {
+  const LoginAdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +107,8 @@ class LoginScreen extends StatelessWidget {
 
                               controller.emailController.clear();
                               controller.passwordController.clear();
-                              Get.off(() => const Home());
+                              // Get.off(() => const Home());
+                              Get.off(() => const Home_Admin());
                             }
                           });
                           controller.isLoading(false);
